@@ -11,12 +11,19 @@ class AppContainer extends Component {
   render() {
     const { isLoggedIn } = this.props;
     return (
-      <View>
+      <View style={styles.container}>
         <StatusBar hidden={false} />
         {isLoggedIn? <Text>You are logged in</Text> : <LoggedOutNavigation />}
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff"
+  }
+})
 
 export default AppContainer;
