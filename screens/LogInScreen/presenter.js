@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity, TextInput, StatusBar } from "react-native";
+import PropTypes from  "prop-types";
+import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity, TextInput, StatusBar, ActivityIndicator } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 const {
@@ -14,11 +15,30 @@ const LogInScreen = props => (
       <Image source={require("../../assets/images/logo-white.png")} resizeMode="stretch" style={styles.logo}/> 
     </View> 
     <View style={styles.content}>
-      <TextInput placeholder = "Username" style={styles.textInput} autoCapitalize={"none"} autoCorrect={false}/>
-      <TextInput placeholder = "Password" style={styles.textInput} secureTextEntry={true} />
-      <TouchableOpacity style={styles.touchable}>
+      <TextInput 
+        placeholder = "Username" 
+        style={styles.textInput} 
+        autoCapitalize={"none"} 
+        autoCorrect={false} 
+        value={props.username}
+        onChangeText={props.changeUsername}
+      />
+      <TextInput 
+        placeholder = "Password" 
+        style={styles.textInput} 
+        secureTextEntry={true} 
+        value={props.password}
+        onChangeText={props.changePassword}
+        returnKeyType={"send"}
+        onSubmitEditing={props.submit}
+      />
+      <TouchableOpacity style={styles.touchable} onPressOut={props.submit}>
         <View style={styles.button}>
-          <Text style={styles.btnText}>Login</Text> 
+          {props.isSubmitting ? (
+            <ActivityIndicator size={"small"} color={"white"} />
+          ) : (
+            <Text style={styles.btnText}>Login</Text>
+          )} 
         </View > 
       </TouchableOpacity> 
       <TouchableOpacity style={styles.fbContainer}>
@@ -30,6 +50,15 @@ const LogInScreen = props => (
     </View> 
   </View>
 );
+
+LogInScreen.propTypes = {
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  isSubmitting: PropTypes.bool.isRequired,
+  changeUsername: PropTypes.func.isRequired,
+  changePassword: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired
+};
 
 const styles = StyleSheet.create({
   container: {
